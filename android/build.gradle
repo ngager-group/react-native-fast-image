@@ -14,22 +14,18 @@ def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
-def _excludeAppGlideModule = safeExtGet("excludeAppGlideModule", false)
-def _buildToolsVersion = safeExtGet("buildToolsVersion", "28.0.3")
+def _reactNativeVersion = safeExtGet("reactNative", "+")
 def _compileSdkVersion = safeExtGet("compileSdkVersion", 28)
 def _glideVersion = safeExtGet("glideVersion", "4.9.0")
-def _minSdkVersion = safeExtGet("minSdkVersion", 16)
-def _reactNativeVersion = safeExtGet("reactNative", "+")
-def _targetSdkVersion = safeExtGet("targetSdkVersion", 28)
 
 android {
     compileSdkVersion _compileSdkVersion
-    buildToolsVersion _buildToolsVersion
+    buildToolsVersion safeExtGet("buildToolsVersion", "28.0.3")
 
     sourceSets {
         main {
             java {
-                if (_excludeAppGlideModule) {
+                if (safeExtGet("excludeAppGlideModule", false)) {
                     srcDir "src"
                     exclude "**/FastImageGlideModule.java"
                 }
@@ -38,8 +34,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion _minSdkVersion
-        targetSdkVersion _targetSdkVersion
+        minSdkVersion safeExtGet("minSdkVersion", 16)
+        targetSdkVersion safeExtGet("targetSdkVersion", 28)
         versionCode 1
         versionName "1.0"
     }
